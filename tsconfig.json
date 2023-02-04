@@ -1,0 +1,30 @@
+{
+    "version": "3.3.3",
+    "compilerOptions": {
+        "allowJs": false,
+        "allowSyntheticDefaultImports": true,
+        "baseUrl": "./",
+        "declaration": false,
+        "downlevelIteration": true,
+        "esModuleInterop": true,
+        "experimentalDecorators": true,
+        "forceConsistentCasingInFileNames": true,
+        "jsx": "react",
+        "lib": ["dom", "es2015", "es2020.string", "es5", "es6"],
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noUnusedLocals": false,
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "rootDirs": ["dev/js"],
+        "sourceMap": true,
+        "strictNullChecks": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "target": "es5",
+        "types": ["jest", "node", "react"],
+        "typeRoots": ["./node_modules/@types"]
+    },
+    "include": ["client"],
+    "exclude": ["node_modules", "dist", "**/*.test.ts*"]
+}

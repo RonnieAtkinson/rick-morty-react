@@ -1,0 +1,31 @@
+{
+    "tags": {
+        "allowUnknownTags": true,
+        "dictionaries": ["jsdoc", "closure"]
+    },
+    "source": {
+        "include": ["client"],
+        "includePattern": ".+\\.ts(doc|x)?$",
+        "excludePattern": "(node_modules/|docs)"
+    },
+    "plugins": ["node_modules/jsdoc-babel"],
+    "templates": {
+        "cleverLinks": false,
+        "monospaceLinks": true,
+        "useLongnameInNav": false,
+        "showInheritedInNav": true
+    },
+    "babel": {
+        "extensions": ["tsx"],
+        "ignore": ["**/*.(test|spec).ts"],
+        "babelrc": false,
+        "presets": [["@babel/preset-env", { "targets": { "node": true } }], "@babel/preset-typescript"],
+        "plugins": ["@babel/proposal-class-properties", "@babel/proposal-object-rest-spread"]
+    },
+    "opts": {
+        "destination": "./docs/",
+        "encoding": "utf8",
+        "recurse": true,
+        "verbose": true
+    }
+}
