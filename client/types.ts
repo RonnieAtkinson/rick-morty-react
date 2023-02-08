@@ -71,6 +71,6 @@ export namespace RM {
         totalPages: number;
         prevPage: string | null;
         nextPage: string | null;
-        onPageChange: (page: number) => void;
+        onPageChange: (searchParams: URLSearchParams) => SetURLSearchParams;
     };
 }
