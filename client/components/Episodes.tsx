@@ -64,24 +64,16 @@ import { RM } from '../types'; // [7]
  * Data
  * 9. Destruct info and results from data
  *
- * Page change handler
- * @param {number} newPage
- * Updates the page search param
- * 10. If the new page number is 1 remove the page search param from the url so we end up with a clean url and not ?page=1.
- * # / and /?page=1 are the same.
- * If the new page number is NOT 1 set the page search param to the new page.
- * # eg ?page=2
- *
  * Filter change hander
  * Updates the filter search params
  * @param {string} searchKey
  * @param {string} searchValue
- * 11. If theres no search value the user has slected 'All' which has a value of '', remove the search param from the url.
+ * 10. If theres no search value the user has slected 'All' which has a value of '', remove the search param from the url.
  * If there is a search value assign it.
- * 12. Remove the page search param so we always start from the first page of the filtered results.
+ * 11. Remove the page search param so we always start from the first page of the filtered results.
  *
  * Filters
- * 13. An array of filter objects passed to the filters component.
+ * 12. An array of filter objects passed to the filters component.
  *
  * Return component
  *
@@ -113,24 +105,16 @@ export const Episodes = (): React.ReactElement => {
     // Data
     const { info, results } = data; // [9]
 
-    // Page change handler
-    const pageChangeHandler = (newPage: number) => {
-        setSearchParams(searchParams => {
-            newPage === 1 ? searchParams.delete('page') : searchParams.set('page', String(newPage)); // [10]
-            return searchParams;
-        });
-    };
-
     // Filter handler
     const filterChangeHandler = (searchKey: string, searchValue: string) => {
         setSearchParams(searchParams => {
-            !searchValue ? searchParams.delete(searchKey) : searchParams.set(searchKey, searchValue); // [11]
-            searchParams.delete('page'); // [12]
+            !searchValue ? searchParams.delete(searchKey) : searchParams.set(searchKey, searchValue); // [10]
+            searchParams.delete('page'); // [11]
             return searchParams;
         });
     };
 
-    // Filters [13]
+    // Filters [12]
     const filters: RM.filterProps[] = [
         {
             label: options.filters.season.label,
@@ -158,7 +142,7 @@ export const Episodes = (): React.ReactElement => {
                 totalPages={info.pages}
                 prevPage={info.prev}
                 nextPage={info.next}
-                onPageChange={pageChangeHandler}
+                onPageChange={setSearchParams}
             />
         </section>
     );

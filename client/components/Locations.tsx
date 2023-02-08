@@ -58,14 +58,6 @@ import { useQuery } from '@tanstack/react-query'; // [5]
  * Data
  * 8. Destruct info and results from data
  *
- * Page change handler
- * @param {number} newPage
- * Updates the page search param
- * 9. If the new page number is 1 remove the page search param from the url so we end up with a clean url and not ?page=1.
- * # / and /?page=1 are the same.
- * If the new page number is NOT 1 set the page search param to the new page.
- * # eg ?page=2
- *
  * Return component
  *
  */
@@ -94,14 +86,6 @@ export const Locations = (): React.ReactElement => {
     // Data
     const { info, results } = data; // [8]
 
-    // Page change handler
-    const pageChangeHandler = (newPage: number) => {
-        setSearchParams(searchParams => {
-            newPage === 1 ? searchParams.delete('page') : searchParams.set('page', String(newPage)); // [9]
-            return searchParams;
-        });
-    };
-
     // Return component
     return (
         <section>
@@ -117,7 +101,7 @@ export const Locations = (): React.ReactElement => {
                 totalPages={info.pages}
                 prevPage={info.prev}
                 nextPage={info.next}
-                onPageChange={pageChangeHandler}
+                onPageChange={setSearchParams}
             />
         </section>
     );
