@@ -63,7 +63,7 @@ export namespace RM {
             value: string;
         }[];
         searchParam: string;
-        onFilterChange: (value: string, searchParam: string) => void;
+        onFilterChange?: SetURLSearchParams;
     };
 
     export type paginationProps = {
@@ -71,6 +71,6 @@ export namespace RM {
         totalPages: number;
         prevPage: string | null;
         nextPage: string | null;
-        onPageChange: (searchParams: URLSearchParams) => SetURLSearchParams;
+        onPageChange: SetURLSearchParams;
     };
 }
