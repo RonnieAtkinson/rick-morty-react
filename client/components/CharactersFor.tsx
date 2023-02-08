@@ -89,45 +89,38 @@ import { options } from '../options'; // [8]
  * 10. Returns the data untouched if it's already an array, or pushes data to a new array if its an object,
  *    if the data is neither an array or an object returns an empty array.
  *
- * Filter handler
- * Updates the filter search params
- * @param {string} searchKey
- * @param {string} searchValue
- * 11. If theres no search value the user has slected 'All' which has a value of '', remove the search param from the url.
- * If there is a search value assign it.
- *
  * Filtered characters data
  * The api doesn't provide a way to filter characters for a resource so we'll have to filter the data we already have.
- * 12. If neither the gender or the status search params have been set then just return true on the filter, we'll need them all.
- * 13. If only the gender param is falsy the user has selected a status. Return all the characters whos status match the value of the search param.
- * 14. If only the status param is falsy the user has selected a gender. Return all the characters whos gender match the value of the search param.
- * 15. If neither status params are falsy the user has selected a status and a gender. Return all the characters whos status and gender match the values of the search params.
+ * 11. If neither the gender or the status search params have been set then just return true on the filter, we'll need them all.
+ * 12. If only the gender param is falsy the user has selected a status. Return all the characters whos status match the value of the search param.
+ * 13. If only the status param is falsy the user has selected a gender. Return all the characters whos gender match the value of the search param.
+ * 14. If neither status params are falsy the user has selected a status and a gender. Return all the characters whos status and gender match the values of the search params.
  * These values are case-insensitive so if character.gender: 'Female', but the search param is gender=female the equality will still be true.
  *
  * Custom sort order
  * Array.sort() functions.
- * 16. Custom array sort function for gender.
- * 17. Custom array sort function for status.
+ * 15. Custom array sort function for gender.
+ * 16. Custom array sort function for status.
  *
  * Gender filters
  * Create gender filters based on the gender values from the original query.
  * For example if there are only male and genderless characters in an episode only male and genderless will be added as filters. Not female, etc.
  * Orders the filters based on their order in options so they remain the same sitewide.
- * 18. Adds the first filter from gender which is 'All', eg: { name: 'All', value: '' }
- * 19. Adds the rest of the gender filters for the current query in the correct order.
+ * 17. Adds the first filter from gender which is 'All', eg: { name: 'All', value: '' }
+ * 18. Adds the rest of the gender filters for the current query in the correct order.
  *
  * Status filters
  * Create status filters based on the gender values from the original query.
  * For example if there are only alive characters in an episode only alive will be added as a filter. Not dead, unknown, etc.
  * Orders the filters based on their order in options so they remain the same sitewide.
- * 20. Adds the first filter from status which is 'All', eg: { name: 'All', value: '' },
- * 21. Adds the rest of the status filters for the current query in the correct order.
+ * 19. Adds the first filter from status which is 'All', eg: { name: 'All', value: '' },
+ * 20. Adds the rest of the status filters for the current query in the correct order.
  *
  * Filters
- * 22. An array of filter objects passed to the filters component.
+ * 21. An array of filter objects passed to the filters component.
  *
  * Return component
- * 23. If theres no characters in the filtered array show a message instead.
+ * 22. If theres no characters in the filtered array show a message instead.
  * An optional prop may be used for this (noFilterResultsText), if no prop is present use a fallback from the options.
  *
  */
@@ -168,65 +161,55 @@ export const CharactersFor = ({
     // Make sure data is an array
     const updatedData: RM.character[] = ArrayUtil.instance.getArrayFor(data); // [10]
 
-    // Filter handler
-    const filterChangeHandler = (searchKey: string, searchValue: string) => {
-        setSearchParams(searchParams => {
-            !searchValue ? searchParams.delete(searchKey) : searchParams.set(searchKey, searchValue); // [11]
-            return searchParams;
-        });
-    };
-
     // Filter characters data
     const filteredCharacters = updatedData.filter(character => {
-        if (!genderSearchParam && !statusSearchParam) return true; // [12]
-        if (!genderSearchParam) return character.status.toLowerCase() === statusSearchParam.toLowerCase(); // [13]
-        if (!statusSearchParam) return character.gender.toLowerCase() === genderSearchParam.toLowerCase(); // [14]
+        if (!genderSearchParam && !statusSearchParam) return true; // [11]
+        if (!genderSearchParam) return character.status.toLowerCase() === statusSearchParam.toLowerCase(); // [12]
+        if (!statusSearchParam) return character.gender.toLowerCase() === genderSearchParam.toLowerCase(); // [13]
         return (
             character.gender.toLowerCase() === genderSearchParam.toLowerCase() &&
-            character.status.toLowerCase() === statusSearchParam.toLowerCase() // [15]
+            character.status.toLowerCase() === statusSearchParam.toLowerCase() // [14]
         );
     });
 
     // Custom sort order
-    const genderSort = ArrayUtil.instance.sortStringsByObjectsIn(options.filters.gender.data, 'name'); // [16]
-    const statusSort = ArrayUtil.instance.sortStringsByObjectsIn(options.filters.status.data, 'name'); // [17]
+    const genderSort = ArrayUtil.instance.sortStringsByObjectsIn(options.filters.gender.data, 'name'); // [15]
+    const statusSort = ArrayUtil.instance.sortStringsByObjectsIn(options.filters.status.data, 'name'); // [16]
 
     // Gender filters
     const genderFilters = [
-        options.filters.gender.data[0], // [18]
-        ...ArrayUtil.instance.getFilterValuesFor('gender', updatedData, genderSort), // [19]
+        options.filters.gender.data[0], // [17]
+        ...ArrayUtil.instance.getFilterValuesFor('gender', updatedData, genderSort), // [18]
     ];
 
     // Status filters
     const statusFilters = [
-        options.filters.status.data[0], // [20]
-        ...ArrayUtil.instance.getFilterValuesFor('status', updatedData, statusSort), // [21]
+        options.filters.status.data[0], // [19]
+        ...ArrayUtil.instance.getFilterValuesFor('status', updatedData, statusSort), // [20]
     ];
 
-    // Filters [22]
+    // Filters [21]
     const filters: RM.filterProps[] = [
         {
             label: options.filters.gender.label,
             data: genderFilters,
             selected: genderSearchParam,
             searchParam: genderSearchParamKey,
-            onFilterChange: filterChangeHandler,
         },
         {
             label: options.filters.status.label,
             data: statusFilters,
             selected: statusSearchParam,
             searchParam: statusSearchParamKey,
-            onFilterChange: filterChangeHandler,
         },
     ];
 
     // Return component
     return (
         <Fragment>
-            <Filters data={filters} />
+            <Filters data={filters} onFilterChange={setSearchParams} />
             {!filteredCharacters.length ? (
-                <p>{noFilterResultsText || options.defaultText.noFilterResults}</p> // [25]
+                <p>{noFilterResultsText || options.defaultText.noFilterResults}</p> // [21]
             ) : (
                 <CharacterList characters={filteredCharacters} />
             )}

@@ -68,16 +68,8 @@ import { RM } from '../types'; // [7]
  * Data
  * 10. Destruct info and results from data
  *
- * Filter handler
- * Updates the filter search params
- * @param {string} searchKey
- * @param {string} searchValue
- * 11. If theres no search value the user has slected 'All' which has a value of '', remove the search param from the url.
- * If there is a search value assign it.
- * 12. Remove the page search param so we always start from the first page of the filtered results.
- *
  * Filters
- * 13. An array of filter objects passed to the filters component.
+ * 11. An array of filter objects passed to the filters component.
  *
  * Return component
  *
@@ -109,30 +101,19 @@ export const Characters = (): React.ReactElement => {
     // Data
     const { info, results } = data; // [10]
 
-    // Filter handler
-    const filterChangeHandler = (searchKey: string, searchValue: string) => {
-        setSearchParams(searchParams => {
-            !searchValue ? searchParams.delete(searchKey) : searchParams.set(searchKey, searchValue); // [11]
-            searchParams.delete('page'); // [12]
-            return searchParams;
-        });
-    };
-
-    // Filters [13]
+    // Filters [11]
     const filters: RM.filterProps[] = [
         {
             label: options.filters.gender.label,
             data: options.filters.gender.data,
             selected: genderSearchParam,
             searchParam: options.filters.gender.searchParam,
-            onFilterChange: filterChangeHandler,
         },
         {
             label: options.filters.status.label,
             data: options.filters.status.data,
             selected: statusSearchParam,
             searchParam: options.filters.status.searchParam,
-            onFilterChange: filterChangeHandler,
         },
     ];
 
@@ -140,7 +121,7 @@ export const Characters = (): React.ReactElement => {
     return (
         <section>
             <h1>Characters</h1>
-            <Filters data={filters} />
+            <Filters data={filters} onFilterChange={setSearchParams} />
 
             <ul>
                 <li>Count: {info.count}</li>

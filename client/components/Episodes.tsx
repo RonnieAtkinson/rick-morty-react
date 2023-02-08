@@ -64,16 +64,8 @@ import { RM } from '../types'; // [7]
  * Data
  * 9. Destruct info and results from data
  *
- * Filter change hander
- * Updates the filter search params
- * @param {string} searchKey
- * @param {string} searchValue
- * 10. If theres no search value the user has slected 'All' which has a value of '', remove the search param from the url.
- * If there is a search value assign it.
- * 11. Remove the page search param so we always start from the first page of the filtered results.
- *
  * Filters
- * 12. An array of filter objects passed to the filters component.
+ * 10. An array of filter objects passed to the filters component.
  *
  * Return component
  *
@@ -105,23 +97,13 @@ export const Episodes = (): React.ReactElement => {
     // Data
     const { info, results } = data; // [9]
 
-    // Filter handler
-    const filterChangeHandler = (searchKey: string, searchValue: string) => {
-        setSearchParams(searchParams => {
-            !searchValue ? searchParams.delete(searchKey) : searchParams.set(searchKey, searchValue); // [10]
-            searchParams.delete('page'); // [11]
-            return searchParams;
-        });
-    };
-
-    // Filters [12]
+    // Filters [10]
     const filters: RM.filterProps[] = [
         {
             label: options.filters.season.label,
             data: options.filters.season.data,
             selected: seasonSearchParam,
             searchParam: options.filters.season.searchParam,
-            onFilterChange: filterChangeHandler,
         },
     ];
 
@@ -129,7 +111,7 @@ export const Episodes = (): React.ReactElement => {
     return (
         <section>
             <h1>Episodes</h1>
-            <Filters data={filters} />
+            <Filters data={filters} onFilterChange={setSearchParams} />
 
             <ul>
                 <li>Count: {info.count}</li>
