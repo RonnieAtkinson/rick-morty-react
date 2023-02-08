@@ -19,11 +19,18 @@ import { RM } from '../types'; // [3]
  *
  * @param {object} props
  * @param {RM.filterprops[]} props.data An array of filter objects
+ * @param {onFilterChange} props.onFilterChange A function that updates the url search params
  * @returns {React.ReactElement} React element
  * @example <Filters data={RM.filterprops[]} />
  *
  */
-export const Filters = ({ data }: { data: RM.filterProps[] }): React.ReactElement => {
+export const Filters = ({
+    data,
+    onFilterChange,
+}: {
+    data: RM.filterProps[];
+    onFilterChange: SetURLSearchParams;
+}): React.ReactElement => {
     return (
         <div className='filters'>
             {data.map(filter => (
@@ -33,7 +40,7 @@ export const Filters = ({ data }: { data: RM.filterProps[] }): React.ReactElemen
                     data={filter.data}
                     selected={filter.selected}
                     searchParam={filter.searchParam}
-                    onFilterChange={filter.onFilterChange}
+                    onFilterChange={onFilterChange}
                 />
             ))}
         </div>
