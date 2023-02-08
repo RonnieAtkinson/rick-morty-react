@@ -34,8 +34,12 @@ import { RM } from '../types'; // [2]
  *
  */ /*
  *
- * Handler
- * 1. Filter change callback
+ * Filter change hander
+ * Updates the filter search params
+ * 1. Get the value of the select element.
+ * 2. If theres no search value the user has slected 'All' which has a value of '', remove the search param from the url.
+ * If there is a search value assign it.
+ * 3. Remove the page search param so we always start from the first page of the filtered results.
  *
  * Return component
  *
@@ -47,9 +51,13 @@ export const Filter = ({
     searchParam,
     onFilterChange,
 }: RM.filterProps): React.ReactElement => {
-    // Handler
     const filterChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        onFilterChange(searchParam, event.target.value); // [1]
+        const searchValue = event.target.value; // [1]
+        onFilterChange((searchParams: URLSearchParams) => {
+            !searchValue ? searchParams.delete(searchParam) : searchParams.set(searchParam, searchValue); // [2]
+            searchParams.delete('page'); // [3]
+            return searchParams;
+        });
     };
 
     // Return component
