@@ -34,11 +34,13 @@ import { RM } from '../types'; // [2]
  *
  */ /*
  *
- * Next page handler
- * 1. Page change callback, pass the new page number.
- *
- * Prev page handler
- * 2. Page change callback, pass the new page number.
+ * Page change handler
+ * @param {number} newPage
+ * Updates the page search param
+ * 1. If the new page number is 1 remove the page search param from the url so we end up with a clean url and not ?page=1.
+ * # / and /?page=1 are the same.
+ * If the new page number is NOT 1 set the page search param to the new page.
+ * # eg ?page=2
  *
  * Return component
  *
@@ -50,21 +52,21 @@ export const Pagination = ({
     nextPage,
     onPageChange,
 }: RM.paginationProps): React.ReactElement => {
-    // Next page handler
-    const nextPageHandler = () => {
-        onPageChange(page + 1); // [1]
-    };
+    // Page change handler
+    const pageChangeHandler = (newPage: number) => {
+        onPageChange((searchParams: URLSearchParams) => {
+            console.log('Search Params: ', searchParams);
 
-    // Prev page handler
-    const prevPageHander = () => {
-        onPageChange(page - 1); // [2]
+            newPage === 1 ? searchParams.delete('page') : searchParams.set('page', String(newPage)); // [11]
+            return searchParams;
+        });
     };
 
     // Return component
     return (
         <ul>
             <li>
-                <button onClick={prevPageHander} disabled={!prevPage ? true : false}>
+                <button onClick={pageChangeHandler.bind(null, page - 1)} disabled={!prevPage ? true : false}>
                     Prev
                 </button>
             </li>
@@ -72,7 +74,7 @@ export const Pagination = ({
                 {page} / {totalPages}
             </li>
             <li>
-                <button onClick={nextPageHandler} disabled={!nextPage ? true : false}>
+                <button onClick={pageChangeHandler.bind(null, page + 1)} disabled={!nextPage ? true : false}>
                     Next
                 </button>
             </li>
