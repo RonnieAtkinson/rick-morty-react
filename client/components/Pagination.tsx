@@ -55,8 +55,6 @@ export const Pagination = ({
     // Page change handler
     const pageChangeHandler = (newPage: number) => {
         onPageChange((searchParams: URLSearchParams) => {
-            console.log('Search Params: ', searchParams);
-
             newPage === 1 ? searchParams.delete('page') : searchParams.set('page', String(newPage)); // [11]
             return searchParams;
         });
