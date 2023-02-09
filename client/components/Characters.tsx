@@ -56,7 +56,6 @@ import { RM } from '../types'; // [7]
  * The data from the last sucessfull fetch is shown while the new data is being requested.
  * @see https://tanstack.com/query/v4/docs/react/guides/paginated-queries#better-paginated-queries-with-keeppreviousdata
  *
- *
  * Is loading
  * The query has no data yet.
  * 8. Returns a loading JSX element.
@@ -102,7 +101,7 @@ export const Characters = (): React.ReactElement => {
     const { info, results } = data; // [10]
 
     // Filters [11]
-    const filters: RM.filterProps[] = [
+    const filters: RM.filterObjectProps[] = [
         {
             label: options.filters.gender.label,
             data: options.filters.gender.data,

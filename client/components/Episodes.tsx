@@ -98,7 +98,7 @@ export const Episodes = (): React.ReactElement => {
     const { info, results } = data; // [9]
 
     // Filters [10]
-    const filters: RM.filterProps[] = [
+    const filters: RM.filterObjectProps[] = [
         {
             label: options.filters.season.label,
             data: options.filters.season.data,

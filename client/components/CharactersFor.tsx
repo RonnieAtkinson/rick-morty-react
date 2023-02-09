@@ -189,7 +189,7 @@ export const CharactersFor = ({
     ];
 
     // Filters [21]
-    const filters: RM.filterProps[] = [
+    const filters: RM.filterObjectProps[] = [
         {
             label: options.filters.gender.label,
             data: genderFilters,

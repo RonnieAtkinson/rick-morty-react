@@ -28,7 +28,8 @@ export const Filters = ({
     data,
     onFilterChange,
 }: {
-    data: RM.filterProps[];
+    // data: RM.filterProps[];
+    data: RM.filterObjectProps[];
     onFilterChange: RM.SetURLSearchParams;
 }): React.ReactElement => {
     return (
