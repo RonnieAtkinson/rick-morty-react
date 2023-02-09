@@ -63,7 +63,17 @@ export namespace RM {
             value: string;
         }[];
         searchParam: string;
-        onFilterChange?: SetURLSearchParams;
+        onFilterChange: SetURLSearchParams;
+    };
+
+    export type filterObjectProps = {
+        selected?: string;
+        label: string;
+        data: {
+            name: string;
+            value: string;
+        }[];
+        searchParam: string;
     };
 
     export type paginationProps = {
