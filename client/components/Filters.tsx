@@ -29,7 +29,7 @@ export const Filters = ({
     onFilterChange,
 }: {
     data: RM.filterProps[];
-    onFilterChange: SetURLSearchParams;
+    onFilterChange: RM.SetURLSearchParams;
 }): React.ReactElement => {
     return (
         <div className='filters'>
