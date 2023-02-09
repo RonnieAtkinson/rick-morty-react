@@ -54,8 +54,8 @@ export const Pagination = ({
 }: RM.paginationProps): React.ReactElement => {
     // Page change handler
     const pageChangeHandler = (newPage: number) => {
-        onPageChange((searchParams: URLSearchParams) => {
-            newPage === 1 ? searchParams.delete('page') : searchParams.set('page', String(newPage)); // [11]
+        onPageChange(searchParams => {
+            newPage === 1 ? searchParams.delete('page') : searchParams.set('page', String(newPage)); // [1]
             return searchParams;
         });
     };
