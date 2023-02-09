@@ -73,4 +73,9 @@ export namespace RM {
         nextPage: string | null;
         onPageChange: SetURLSearchParams;
     };
+
+    // https://github.com/remix-run/react-router/blob/main/packages/react-router-dom/index.tsx
+    export type SetURLSearchParams = (
+        nextInit?: URLSearchParams | ((prev: URLSearchParams) => URLSearchParams)
+    ) => void;
 }
