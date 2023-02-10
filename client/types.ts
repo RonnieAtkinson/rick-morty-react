@@ -2,6 +2,8 @@
 // #TYPES
 // ==========================================================================
 
+import { NavigateOptions, URLSearchParamsInit } from "react-router-dom";
+
 export namespace RM {
     export type episode = {
         id: number;
@@ -86,6 +88,9 @@ export namespace RM {
 
     // https://github.com/remix-run/react-router/blob/main/packages/react-router-dom/index.tsx
     export type SetURLSearchParams = (
-        nextInit?: URLSearchParams | ((prev: URLSearchParams) => URLSearchParams)
-    ) => void;
+        nextInit?:
+          | URLSearchParamsInit
+          | ((prev: URLSearchParams) => URLSearchParamsInit),
+        navigateOpts?: NavigateOptions
+      ) => void;
 }
