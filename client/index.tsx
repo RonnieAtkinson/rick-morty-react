@@ -61,6 +61,7 @@ const queryClient = new QueryClient({
         queries: {
             staleTime: 10 * (60 * 10000), // [2]
             cacheTime: 15 * (60 * 10000), // [3]
+            suspense: true,
         },
     },
 });
