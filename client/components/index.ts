@@ -20,3 +20,4 @@ export * from './Filter';
 export * from './Filters';
 export * from './Pagination';
 export * from './GlobalLoadingSpinner';
+export * from './Loader';
