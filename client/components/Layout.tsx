@@ -10,10 +10,10 @@
  * 4. Import child components
  *
  */
-import React, { Fragment } from 'react'; // [1]
+import React, { Fragment, Suspense } from 'react'; // [1]
 import { Link, Outlet } from 'react-router-dom'; // [2]
 import { Toaster } from 'react-hot-toast'; // [3]
-import { GlobalLoadingSpinner } from './'; // [4]
+import { GlobalLoadingSpinner, Loader } from './'; // [4]
 
 /**
  * Layout component
@@ -46,10 +46,12 @@ export const Layout = (): React.ReactElement => {
             </nav>
 
             <main>
-                <Outlet />
+                <Suspense fallback={<Loader />}>
+                    <Outlet />
+                </Suspense>
             </main>
 
-            <GlobalLoadingSpinner />
+            {/* <GlobalLoadingSpinner /> */}
         </Fragment>
     );
 };
