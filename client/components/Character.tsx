@@ -44,45 +44,35 @@ import { StringUtil } from '../utils'; // [6]
  * Also passes in the `characterId` from the url params.
  * @see https://tanstack.com/query/v4/docs/react/guides/query-functions
  *
- * Is loading
- * The query has no data yet.
- * 4. Returns a loading JSX element.
- *
- * Is Error
- * The query encountered an error.
- * 5. Returns an error JSX element.
+ * Check data is not undefined
+ * 4. Data types are still <T | undefined> even when using suspense.
+ * Will remove when a suspense specific function is available eg. useSuspenseQuery.
+ * @see: https://github.com/TanStack/query/issues/1297
  *
  * Get the episode ids
- * 6. Get the episode ids from the array of episode urls.
+ * 5. Get the episode ids from the array of episode urls.
  * An episode url looks like 'https://rickandmortyapi.com/api/episode/24'
  * The `getLastUrlPart` method returns '24' for the above url.
  *
  * Return component
  *
  */
-export const Character = (): React.ReactElement => {
+export const Character = (): React.ReactElement | null => {
     // URL params
     const { characterId } = useParams(); // [1]
 
     // Query
-    const { data, isError, isLoading } = useQuery({
+    const { data } = useQuery({
         queryKey: ['character', characterId], // [2]
         queryFn: () => RickMortyService.instance.getCharacter(characterId), // [3]
     });
 
-    // Is loading
-    if (isLoading) {
-        return <p>Loading...</p>; // [4]
-    }
-
-    // Is Error
-    if (isError) {
-        return <p>An error occured.</p>; // [5]
-    }
+    // Check data is not undefined
+    if (!data) return null; // [4]
 
     // Get the episode ids
     const episodes: string[] = data.episode.map(episode => {
-        return StringUtil.instance.getLastUrlPart(episode); // [6]
+        return StringUtil.instance.getLastUrlPart(episode); // [5]
     });
 
     // Return component

@@ -47,44 +47,34 @@ import { useQuery } from '@tanstack/react-query'; // [5]
  * The data from the last sucessfull fetch is shown while the new data is being requested.
  * @see https://tanstack.com/query/v4/docs/react/guides/paginated-queries#better-paginated-queries-with-keeppreviousdata
  *
- * Is loading
- * The query has no data yet.
- * 6. Returns a loading JSX element.
- *
- * Is Error
- * The query encountered an error.
- * 7. Returns an error JSX element.
+ * Check data is not undefined
+ * 6. Data types are still <T | undefined> even when using suspense.
+ * Will remove when a suspense specific function is available eg. useSuspenseQuery.
+ * @see: https://github.com/TanStack/query/issues/1297
  *
  * Data
- * 8. Destruct info and results from data
+ * 7. Destruct info and results from data
  *
  * Return component
  *
  */
-export const Locations = (): React.ReactElement => {
+export const Locations = (): React.ReactElement | null => {
     // Search params
     const [searchParams, setSearchParams] = useSearchParams(); // [1]
     const page = Number(searchParams.get('page')) || 1; // [2]
 
     // Query
-    const { data, isLoading, isError } = useQuery({
+    const { data } = useQuery({
         queryKey: ['locations', { page }], // [3]
         queryFn: () => RickMortyService.instance.getLocations(page), // [4]
         keepPreviousData: true, // [5]
     });
 
-    // Is loading
-    if (isLoading) {
-        return <p>Loading...</p>; // [6]
-    }
-
-    // Is Error
-    if (isError) {
-        return <p>An error occured.</p>; // [7]
-    }
+    // Check data is not undefined
+    if (!data) return null; // [6]
 
     // Data
-    const { info, results } = data; // [8]
+    const { info, results } = data; // [7]
 
     // Return component
     return (

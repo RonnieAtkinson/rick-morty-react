@@ -76,51 +76,48 @@ import { options } from '../options'; // [8]
  * Also passes in an array of character ids.
  * @see https://tanstack.com/query/v4/docs/react/guides/query-functions
  *
- * Is loading
- * The query has no data yet.
- * 8. Returns a loading JSX element.
- *
- * Is Error
- * The query encountered an error.
- * 9. Returns an error JSX element.
+ * Check data is not undefined
+ * 8. Data types are still <T | undefined> even when using suspense.
+ * Will remove when a suspense specific function is available eg. useSuspenseQuery.
+ * @see: https://github.com/TanStack/query/issues/1297
  *
  * Make sure data is an array
  * If the data only returns a single character it will be an object. It needs to be an array when we come to map.
- * 10. Returns the data untouched if it's already an array, or pushes data to a new array if its an object,
+ * 9. Returns the data untouched if it's already an array, or pushes data to a new array if its an object,
  *    if the data is neither an array or an object returns an empty array.
  *
  * Filtered characters data
  * The api doesn't provide a way to filter characters for a resource so we'll have to filter the data we already have.
- * 11. If neither the gender or the status search params have been set then just return true on the filter, we'll need them all.
- * 12. If only the gender param is falsy the user has selected a status. Return all the characters whos status match the value of the search param.
- * 13. If only the status param is falsy the user has selected a gender. Return all the characters whos gender match the value of the search param.
- * 14. If neither status params are falsy the user has selected a status and a gender. Return all the characters whos status and gender match the values of the search params.
+ * 10. If neither the gender or the status search params have been set then just return true on the filter, we'll need them all.
+ * 11. If only the gender param is falsy the user has selected a status. Return all the characters whos status match the value of the search param.
+ * 12. If only the status param is falsy the user has selected a gender. Return all the characters whos gender match the value of the search param.
+ * 13. If neither status params are falsy the user has selected a status and a gender. Return all the characters whos status and gender match the values of the search params.
  * These values are case-insensitive so if character.gender: 'Female', but the search param is gender=female the equality will still be true.
  *
  * Custom sort order
  * Array.sort() functions.
- * 15. Custom array sort function for gender.
- * 16. Custom array sort function for status.
+ * 14. Custom array sort function for gender.
+ * 15. Custom array sort function for status.
  *
  * Gender filters
  * Create gender filters based on the gender values from the original query.
  * For example if there are only male and genderless characters in an episode only male and genderless will be added as filters. Not female, etc.
  * Orders the filters based on their order in options so they remain the same sitewide.
- * 17. Adds the first filter from gender which is 'All', eg: { name: 'All', value: '' }
- * 18. Adds the rest of the gender filters for the current query in the correct order.
+ * 16. Adds the first filter from gender which is 'All', eg: { name: 'All', value: '' }
+ * 17. Adds the rest of the gender filters for the current query in the correct order.
  *
  * Status filters
  * Create status filters based on the gender values from the original query.
  * For example if there are only alive characters in an episode only alive will be added as a filter. Not dead, unknown, etc.
  * Orders the filters based on their order in options so they remain the same sitewide.
- * 19. Adds the first filter from status which is 'All', eg: { name: 'All', value: '' },
- * 20. Adds the rest of the status filters for the current query in the correct order.
+ * 18. Adds the first filter from status which is 'All', eg: { name: 'All', value: '' },
+ * 19. Adds the rest of the status filters for the current query in the correct order.
  *
  * Filters
- * 21. An array of filter objects passed to the filters component.
+ * 20. An array of filter objects passed to the filters component.
  *
  * Return component
- * 22. If theres no characters in the filtered array show a message instead.
+ * 21. If theres no characters in the filtered array show a message instead.
  * An optional prop may be used for this (noFilterResultsText), if no prop is present use a fallback from the options.
  *
  */
@@ -132,7 +129,7 @@ export const CharactersFor = ({
     cacheKeys: any;
     characterIds: string[];
     noFilterResultsText?: string;
-}): React.ReactElement => {
+}): React.ReactElement | null => {
     // Options
     const statusSearchParamKey = `character_${options.filters.status.searchParam}`; // [1]
     const genderSearchParamKey = `character_${options.filters.gender.searchParam}`; // [2]
@@ -143,49 +140,42 @@ export const CharactersFor = ({
     const genderSearchParam = searchParams.get(genderSearchParamKey) || ''; // [5]
 
     // Query
-    const { data, isLoading, isError } = useQuery({
+    const { data } = useQuery({
         queryKey: ['characters', cacheKeys], // [6]
         queryFn: () => RickMortyService.instance.getMultipleCharacters(characterIds), // [7]
     });
 
-    // Is loading
-    if (isLoading) {
-        return <span>Loading...</span>; // [8]
-    }
-
-    // Is error
-    if (isError) {
-        return <span>Error</span>; // [9]
-    }
+    // Check data is not undefined
+    if (!data) return null; // [8]
 
     // Make sure data is an array
-    const updatedData: RM.character[] = ArrayUtil.instance.getArrayFor(data); // [10]
+    const updatedData: RM.character[] = ArrayUtil.instance.getArrayFor(data); // [9]
 
     // Filter characters data
     const filteredCharacters = updatedData.filter(character => {
-        if (!genderSearchParam && !statusSearchParam) return true; // [11]
-        if (!genderSearchParam) return character.status.toLowerCase() === statusSearchParam.toLowerCase(); // [12]
-        if (!statusSearchParam) return character.gender.toLowerCase() === genderSearchParam.toLowerCase(); // [13]
+        if (!genderSearchParam && !statusSearchParam) return true; // [10]
+        if (!genderSearchParam) return character.status.toLowerCase() === statusSearchParam.toLowerCase(); // [11]
+        if (!statusSearchParam) return character.gender.toLowerCase() === genderSearchParam.toLowerCase(); // [12]
         return (
             character.gender.toLowerCase() === genderSearchParam.toLowerCase() &&
-            character.status.toLowerCase() === statusSearchParam.toLowerCase() // [14]
+            character.status.toLowerCase() === statusSearchParam.toLowerCase() // [13]
         );
     });
 
     // Custom sort order
-    const genderSort = ArrayUtil.instance.sortStringsByObjectsIn(options.filters.gender.data, 'name'); // [15]
-    const statusSort = ArrayUtil.instance.sortStringsByObjectsIn(options.filters.status.data, 'name'); // [16]
+    const genderSort = ArrayUtil.instance.sortStringsByObjectsIn(options.filters.gender.data, 'name'); // [14]
+    const statusSort = ArrayUtil.instance.sortStringsByObjectsIn(options.filters.status.data, 'name'); // [15]
 
     // Gender filters
     const genderFilters = [
-        options.filters.gender.data[0], // [17]
-        ...ArrayUtil.instance.getFilterValuesFor('gender', updatedData, genderSort), // [18]
+        options.filters.gender.data[0], // [16]
+        ...ArrayUtil.instance.getFilterValuesFor('gender', updatedData, genderSort), // [17]
     ];
 
     // Status filters
     const statusFilters = [
-        options.filters.status.data[0], // [19]
-        ...ArrayUtil.instance.getFilterValuesFor('status', updatedData, statusSort), // [20]
+        options.filters.status.data[0], // [18]
+        ...ArrayUtil.instance.getFilterValuesFor('status', updatedData, statusSort), // [19]
     ];
 
     // Filters [21]
@@ -209,7 +199,7 @@ export const CharactersFor = ({
         <Fragment>
             <Filters data={filters} onFilterChange={setSearchParams} />
             {!filteredCharacters.length ? (
-                <p>{noFilterResultsText || options.defaultText.noFilterResults}</p> // [21]
+                <p>{noFilterResultsText || options.defaultText.noFilterResults}</p> // [20]
             ) : (
                 <CharacterList characters={filteredCharacters} />
             )}

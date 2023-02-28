@@ -43,21 +43,18 @@ import { RM } from '../types'; // [6]
  * Also passes in the page param.
  * @see https://tanstack.com/query/v4/docs/react/guides/query-functions
  *
- * Is loading
- * The query has no data yet.
- * 3. Returns a loading JSX element.
- *
- * Is Error
- * The query encountered an error.
- * 4. Returns an error JSX element.
+ * Check data is not undefined
+ * 3. Data types are still <T | undefined> even when using suspense.
+ * Will remove when a suspense specific function is available eg. useSuspenseQuery.
+ * @see: https://github.com/TanStack/query/issues/1297
  *
  * Make sure data is an array
  * If the data only returns a single episode it will be an object. It needs to be an array when we come to map.
- * 5. Returns the data untouched if it's already an array, or pushes data to a new array if its an object,
+ * 4. Returns the data untouched if it's already an array, or pushes data to a new array if its an object,
  *    if the data is neither an array or an object returns an empty array.
  *
  * Group the episodes by season
- * 6. Group the data by season number
+ * 5. Group the data by season number
  * eg. [
  * {number: '1', episodes: [RM.episode[]]}
  * {number: '2', episodes: [RM.episode[]]}
@@ -72,28 +69,21 @@ export const EpisodesFor = ({
 }: {
     cacheKeys: any;
     episodeIds: string[];
-}): React.ReactElement => {
+}): React.ReactElement | null => {
     // Query
-    const { data, isLoading, isError } = useQuery({
+    const { data } = useQuery({
         queryKey: ['episodes', cacheKeys], // [1]
         queryFn: () => RickMortyService.instance.getMultipleEpisodes(episodeIds), // [2]
     });
 
-    // Is loading
-    if (isLoading) {
-        return <span>Loading...</span>; // [3]
-    }
-
-    // Is error
-    if (isError) {
-        return <span>Error</span>; // [4]
-    }
+    // Check data is not undefined
+    if (!data) return null; // [3]
 
     // Make sure data is an array
-    const updatedData: RM.episode[] = ArrayUtil.instance.getArrayFor(data); // [5]
+    const updatedData: RM.episode[] = ArrayUtil.instance.getArrayFor(data); // [4]
 
     // Group the episodes by season
-    const seasonGroupedData = ArrayUtil.instance.groupBySeasons(updatedData); // [6]
+    const seasonGroupedData = ArrayUtil.instance.groupBySeasons(updatedData); // [5]
 
     // Return component
     return (
