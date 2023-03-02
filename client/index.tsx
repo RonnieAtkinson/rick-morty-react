@@ -18,7 +18,17 @@ import ReactDOM from 'react-dom/client'; // [2]
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'; // [3]
 import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query'; // [4]
 import toast from 'react-hot-toast'; // [5]
-import { Layout, Home, Episodes, Episode, Characters, Character, Locations, Location } from './components'; // [6]
+import {
+    Layout,
+    Home,
+    Episodes,
+    Episode,
+    Characters,
+    Character,
+    Locations,
+    Location,
+    Error404,
+} from './components'; // [6]
 
 /**
  * New react QueryClient instance.
@@ -107,6 +117,10 @@ const router = createBrowserRouter([
             {
                 path: '/locations/:locationId',
                 element: <Location />,
+            },
+            {
+                path: '*',
+                element: <Error404 />,
             },
         ],
     },
