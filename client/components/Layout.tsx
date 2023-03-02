@@ -7,13 +7,17 @@
  * 1. Import react
  * 2. Import react router
  * 3. Import toast
- * 4. Import child components
+ * 4. Import react query
+ * 5. Import Error boundary
+ * 6. Import child components
  *
  */
 import React, { Fragment, Suspense } from 'react'; // [1]
 import { Link, Outlet } from 'react-router-dom'; // [2]
 import { Toaster } from 'react-hot-toast'; // [3]
-import { GlobalLoadingSpinner, Loader } from './'; // [4]
+import { useQueryErrorResetBoundary } from '@tanstack/react-query'; // [4]
+import { ErrorBoundary } from 'react-error-boundary'; // [5]
+import { GlobalLoadingSpinner, Loader, ErrorFallback } from './'; // [6]
 
 /**
  * Layout component
@@ -24,6 +28,12 @@ import { GlobalLoadingSpinner, Loader } from './'; // [4]
  *
  */
 export const Layout = (): React.ReactElement => {
+    const { reset } = useQueryErrorResetBoundary();
+
+    const myErrorHandler = (error: Error, info: { componentStack: string }) => {
+        console.log('Error', error);
+    };
+
     return (
         <Fragment>
             <Toaster position='bottom-right' />
@@ -46,9 +56,11 @@ export const Layout = (): React.ReactElement => {
             </nav>
 
             <main>
-                <Suspense fallback={<Loader />}>
-                    <Outlet />
-                </Suspense>
+                <ErrorBoundary onReset={reset} onError={myErrorHandler} FallbackComponent={ErrorFallback}>
+                    <Suspense fallback={<Loader />}>
+                        <Outlet />
+                    </Suspense>
+                </ErrorBoundary>
             </main>
 
             {/* <GlobalLoadingSpinner /> */}
