@@ -25,7 +25,7 @@ export class RickMortyService {
      */
     private async fetchData(query: string) {
         const response = await fetch(`https://rickandmortyapi.com/api/${query}`);
-        if (!response.ok) throw new Error('Network response was not ok');
+        if (!response.ok) throw new Error(`${response.status}: Network response was not ok.`);
         return await response.json();
     }
 
