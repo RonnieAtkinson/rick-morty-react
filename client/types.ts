@@ -2,7 +2,7 @@
 // #TYPES
 // ==========================================================================
 
-import { NavigateOptions, URLSearchParamsInit } from "react-router-dom";
+import { NavigateOptions, URLSearchParamsInit } from 'react-router-dom';
 
 export namespace RM {
     export type episode = {
@@ -86,11 +86,14 @@ export namespace RM {
         onPageChange: SetURLSearchParams;
     };
 
+    export type EpisodeProps = {
+        episodeId: string | undefined;
+        getCharacterIds: React.Dispatch<React.SetStateAction<string[]>>;
+    };
+
     // https://github.com/remix-run/react-router/blob/main/packages/react-router-dom/index.tsx
     export type SetURLSearchParams = (
-        nextInit?:
-          | URLSearchParamsInit
-          | ((prev: URLSearchParams) => URLSearchParamsInit),
+        nextInit?: URLSearchParamsInit | ((prev: URLSearchParams) => URLSearchParamsInit),
         navigateOpts?: NavigateOptions
-      ) => void;
+    ) => void;
 }
