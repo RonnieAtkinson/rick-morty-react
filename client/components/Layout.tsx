@@ -13,7 +13,7 @@
  *
  */
 import React, { Fragment, Suspense } from 'react'; // [1]
-import { Link, Outlet } from 'react-router-dom'; // [2]
+import { Link, Outlet, useLocation } from 'react-router-dom'; // [2]
 import { Toaster } from 'react-hot-toast'; // [3]
 import { useQueryErrorResetBoundary } from '@tanstack/react-query'; // [4]
 import { ErrorBoundary } from 'react-error-boundary'; // [5]
@@ -26,13 +26,17 @@ import { GlobalLoadingSpinner, Loader, ErrorFallback } from './'; // [6]
  * @example
  * <Layout />
  *
+ */ /*
+ *
+ * 1.
+ * 2.
+ * https://github.com/remix-run/history/blob/main/docs/api-reference.md#locationkey
+ *
+ *
  */
 export const Layout = (): React.ReactElement => {
-    const { reset } = useQueryErrorResetBoundary();
-
-    const myErrorHandler = (error: Error, info: { componentStack: string }) => {
-        console.log('Error', error);
-    };
+    const { reset } = useQueryErrorResetBoundary(); // [1]
+    const location = useLocation(); // [2]
 
     return (
         <Fragment>
@@ -56,7 +60,7 @@ export const Layout = (): React.ReactElement => {
             </nav>
 
             <main>
-                <ErrorBoundary onReset={reset} onError={myErrorHandler} FallbackComponent={ErrorFallback}>
+                <ErrorBoundary onReset={reset} FallbackComponent={ErrorFallback} key={location.pathname}>
                     <Suspense fallback={<Loader />}>
                         <Outlet />
                     </Suspense>
