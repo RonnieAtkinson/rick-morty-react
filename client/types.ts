@@ -91,6 +91,11 @@ export namespace RM {
         getCharacterIds: React.Dispatch<React.SetStateAction<string[]>>;
     };
 
+    export type CharacterProps = {
+        characterId: string | undefined;
+        getEpisodeIds: React.Dispatch<React.SetStateAction<string[]>>;
+    };
+
     // https://github.com/remix-run/react-router/blob/main/packages/react-router-dom/index.tsx
     export type SetURLSearchParams = (
         nextInit?: URLSearchParamsInit | ((prev: URLSearchParams) => URLSearchParamsInit),
