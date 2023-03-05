@@ -78,7 +78,6 @@ export const Episodes = (): React.ReactElement | null => {
         queryKey: ['episodes', { page, season: seasonSearchParam }], // [4]
         queryFn: () => RickMortyService.instance.getEpisodes(page, seasonSearchParam), // [5]
         keepPreviousData: true, // [6]
-        // useErrorBoundary: true,
     });
 
     // Check data is not undefined
@@ -100,7 +99,6 @@ export const Episodes = (): React.ReactElement | null => {
     // Return component
     return (
         <section>
-            <h1>Episodes</h1>
             <Filters data={filters} onFilterChange={setSearchParams} />
 
             <ul>
