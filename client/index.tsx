@@ -18,17 +18,16 @@ import ReactDOM from 'react-dom/client'; // [2]
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'; // [3]
 import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query'; // [4]
 import toast from 'react-hot-toast'; // [5]
+import { Layout, Error404 } from './components'; // [6]
 import {
-    Layout,
-    Home,
-    Episodes,
-    Episode,
-    Characters,
-    Character,
-    Locations,
-    Location,
-    Error404,
-} from './components'; // [6]
+    PageHome,
+    PageEpisodes,
+    PageEpisode,
+    PageCharacters,
+    PageCharacter,
+    PageLocations,
+    PageLocation,
+} from './pages';
 
 /**
  * New react QueryClient instance.
@@ -92,31 +91,31 @@ const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <Home />,
+                element: <PageHome />,
             },
             {
                 path: '/episodes',
-                element: <Episodes />,
+                element: <PageEpisodes />,
             },
             {
                 path: '/episodes/:episodeId',
-                element: <Episode />,
+                element: <PageEpisode />,
             },
             {
                 path: '/characters',
-                element: <Characters />,
+                element: <PageCharacters />,
             },
             {
                 path: '/characters/:characterId',
-                element: <Character />,
+                element: <PageCharacter />,
             },
             {
                 path: '/locations',
-                element: <Locations />,
+                element: <PageLocations />,
             },
             {
                 path: '/locations/:locationId',
-                element: <Location />,
+                element: <PageLocation />,
             },
             {
                 path: '*',
