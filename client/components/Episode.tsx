@@ -6,19 +6,17 @@
  * Imports
  *
  * 1. Import react
- * 2. Import react router
- * 3. Import react query
- * 4. Import child components
- * 5. Import services
- * 6. Import utils
+ * 2. Import react query
+ * 3. Import services
+ * 4. Import utils
+ * 5. Import types
  *
  */
-import React from 'react'; // [1]
-import { useParams } from 'react-router-dom'; // [2]
-import { useQuery } from '@tanstack/react-query'; // [3]
-import { CharactersFor } from './'; // [4]
-import { RickMortyService } from '../services'; // [5]
-import { StringUtil } from '../utils'; // [6]
+import React, { useEffect } from 'react'; // [1]
+import { useQuery } from '@tanstack/react-query'; // [2]
+import { RickMortyService } from '../services'; // [3]
+import { StringUtil } from '../utils'; // [4]
+import { RM } from '../types'; // [5]
 
 /**
  * Component for displaying data about a single episode.
@@ -57,10 +55,7 @@ import { StringUtil } from '../utils'; // [6]
  * Return component
  *
  */
-export const Episode = (): React.ReactElement | null => {
-    // URL params
-    const { episodeId } = useParams(); // [1]
-
+export const Episode = ({ episodeId, getCharacterIds }: RM.EpisodeProps): React.ReactElement | null => {
     // Query
     const { data } = useQuery({
         queryKey: ['episode', episodeId], // [2]
@@ -75,6 +70,10 @@ export const Episode = (): React.ReactElement | null => {
         return StringUtil.instance.getLastUrlPart(character); // [5]
     });
 
+    useEffect(() => {
+        getCharacterIds(characters);
+    }, []);
+
     // Return component
     return (
         <section>
@@ -84,13 +83,6 @@ export const Episode = (): React.ReactElement | null => {
                 <li>Aired: {data.air_date}</li>
                 <li>Created: {data.created}</li>
             </ul>
-
-            <h3>Characters</h3>
-            <CharactersFor
-                cacheKeys={{ episodeId: data.id }}
-                characterIds={characters}
-                noFilterResultsText='No characters in this episode that match those filters.'
-            />
         </section>
     );
 };

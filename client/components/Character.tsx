@@ -6,19 +6,19 @@
  * Imports
  *
  * 1. Import react
- * 2. Import react router
- * 3. Import react query
- * 4. Import Child components
- * 5. Import services
- * 6. Import utils
+ * 2. Import react query
+ * 3. Import Child components
+ * 4. Import services
+ * 5. Import utils
+ * 6. Import types
  *
  */
-import React from 'react'; // [1]
-import { useParams } from 'react-router-dom'; // [2]
-import { useQuery } from '@tanstack/react-query'; // [3]
-import { LocationLink, EpisodesFor } from './'; // [4]
-import { RickMortyService } from '../services'; // [5]
-import { StringUtil } from '../utils'; // [6]
+import React, { useEffect } from 'react'; // [1]
+import { useQuery } from '@tanstack/react-query'; // [2]
+import { LocationLink } from './'; // [3]
+import { RickMortyService } from '../services'; // [4]
+import { StringUtil } from '../utils'; // [5]
+import { RM } from '../types'; // [6]
 
 /**
  * Component for displaying data about a single character.
@@ -57,10 +57,7 @@ import { StringUtil } from '../utils'; // [6]
  * Return component
  *
  */
-export const Character = (): React.ReactElement | null => {
-    // URL params
-    const { characterId } = useParams(); // [1]
-
+export const Character = ({ characterId, getEpisodeIds }: RM.CharacterProps): React.ReactElement | null => {
     // Query
     const { data } = useQuery({
         queryKey: ['character', characterId], // [2]
@@ -74,6 +71,10 @@ export const Character = (): React.ReactElement | null => {
     const episodes: string[] = data.episode.map(episode => {
         return StringUtil.instance.getLastUrlPart(episode); // [5]
     });
+
+    useEffect(() => {
+        getEpisodeIds(episodes);
+    }, []);
 
     // Return component
     return (
@@ -94,9 +95,6 @@ export const Character = (): React.ReactElement | null => {
                     Location: <LocationLink name={data.location.name} url={data.location.url} />
                 </li>
             </ul>
-
-            <h3>{`${data.episode.length} ${data.episode.length === 1 ? 'Episode' : 'Episodes'}`}</h3>
-            <EpisodesFor cacheKeys={{ character: data.id }} episodeIds={episodes} />
         </section>
     );
 };
