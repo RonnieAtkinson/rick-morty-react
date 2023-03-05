@@ -14,9 +14,9 @@
  * 7. Import types
  *
  */
-import React, { Suspense } from 'react'; // [1]
+import React from 'react'; // [1]
 import { useSearchParams } from 'react-router-dom'; // [2]
-import { CharacterList, Filters, Loader, Pagination } from './'; // [3]
+import { CharacterList, Filters, Pagination } from './'; // [3]
 import { RickMortyService } from '../services'; // [4]
 import { useQuery } from '@tanstack/react-query'; // [5]
 import { options } from '../options'; // [6]
@@ -109,7 +109,6 @@ export const Characters = (): React.ReactElement | null => {
     // Return component
     return (
         <section>
-            <h1>Characters</h1>
             <Filters data={filters} onFilterChange={setSearchParams} />
 
             <ul>
