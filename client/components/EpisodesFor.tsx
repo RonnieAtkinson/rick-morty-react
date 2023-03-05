@@ -77,7 +77,7 @@ export const EpisodesFor = ({
     });
 
     // Check data is not undefined
-    if (!data) return null; // [3]
+    if (!data || !episodeIds.length) return null; // [3]
 
     // Make sure data is an array
     const updatedData: RM.episode[] = ArrayUtil.instance.getArrayFor(data); // [4]
