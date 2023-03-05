@@ -76,9 +76,10 @@ import { options } from '../options'; // [8]
  * Also passes in an array of character ids.
  * @see https://tanstack.com/query/v4/docs/react/guides/query-functions
  *
- * Check data is not undefined
+ * Check data is not undefined or empty
  * 8. Data types are still <T | undefined> even when using suspense.
  * Will remove when a suspense specific function is available eg. useSuspenseQuery.
+ * Will still need to keep the empty check.
  * @see: https://github.com/TanStack/query/issues/1297
  *
  * Make sure data is an array
@@ -145,8 +146,8 @@ export const CharactersFor = ({
         queryFn: () => RickMortyService.instance.getMultipleCharacters(characterIds), // [7]
     });
 
-    // Check data is not undefined
-    if (!data) return null; // [8]
+    // Check data is not undefined or empty
+    if (!data || !characterIds.length) return null; // [8]
 
     // Make sure data is an array
     const updatedData: RM.character[] = ArrayUtil.instance.getArrayFor(data); // [9]
