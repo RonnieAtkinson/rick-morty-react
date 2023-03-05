@@ -79,7 +79,6 @@ export const Locations = (): React.ReactElement | null => {
     // Return component
     return (
         <section>
-            <h1>Locations</h1>
             <ul>
                 <li>Count: {info.count}</li>
             </ul>
