@@ -12,12 +12,12 @@
  * 6. Import child components
  *
  */
-import React, { Fragment, Suspense } from 'react'; // [1]
+import React, { Fragment } from 'react'; // [1]
 import { Link, Outlet, useLocation } from 'react-router-dom'; // [2]
 import { Toaster } from 'react-hot-toast'; // [3]
 import { useQueryErrorResetBoundary } from '@tanstack/react-query'; // [4]
 import { ErrorBoundary } from 'react-error-boundary'; // [5]
-import { GlobalLoadingSpinner, Loader, ErrorFallback } from './'; // [6]
+import { GlobalLoadingSpinner, ErrorFallback } from './'; // [6]
 
 /**
  * Layout component
@@ -61,9 +61,7 @@ export const Layout = (): React.ReactElement => {
 
             <main>
                 <ErrorBoundary onReset={reset} FallbackComponent={ErrorFallback} key={location.pathname}>
-                    <Suspense fallback={<Loader />}>
-                        <Outlet />
-                    </Suspense>
+                    <Outlet />
                 </ErrorBoundary>
             </main>
 
