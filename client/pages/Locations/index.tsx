@@ -5,11 +5,13 @@
 /**
  * Imports
  * 1. Import react
- * 2. Import child components
+ * 2. Import page specific component
+ * 3. Import child components
  *
  */
 import React, { Suspense } from 'react'; // [1]
-import { Locations, Loader } from '../../components'; // [2]
+import { Locations } from './Locations'; // [2]
+import { Loader } from '../../components'; // [3]
 
 /**
  * Locations page component

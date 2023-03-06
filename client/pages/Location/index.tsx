@@ -6,12 +6,14 @@
  * Imports
  * 1. Import react
  * 2. Import react router
- * 3. Import child components
+ * 3. Import page specific component
+ * 4. Import child components
  *
  */
 import React, { Suspense, useState } from 'react'; // [1]
 import { useParams } from 'react-router-dom'; // [2]
-import { Location, CharactersFor, Loader } from '../../components'; // [3]
+import { LocationInfo } from './LocationInfo'; // [3]
+import { CharactersFor, Loader } from '../../components'; // [4]
 
 /**
  * Location page component
@@ -29,7 +31,7 @@ export const PageLocation = () => {
         <section>
             <h1>Location</h1>
             <Suspense fallback={<Loader />}>
-                <Location locationId={locationId} getCharacterIds={setCharacters} />
+                <LocationInfo locationId={locationId} getCharacterIds={setCharacters} />
 
                 <h3>{`${characters.length} ${characters.length === 1 ? 'Resident' : 'Residents'}`}</h3>
                 <Suspense fallback={<Loader />}>
