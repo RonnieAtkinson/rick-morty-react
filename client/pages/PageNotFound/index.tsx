@@ -12,7 +12,7 @@ import React from 'react';
 /**
  * Page not found component
  *
- * @returns {React.ReactElement}
+ * @returns {React.ReactElement} React element
  * @example
  * <PageNotFound />
  *

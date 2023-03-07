@@ -20,21 +20,20 @@ import { RM } from '../../types'; // [5]
 /**
  * Component for displaying data about a single location.
  *
+ * @param {object} props
+ * @param {string} props.locationId Id of the location to fetch data for.
+ * @param {React.Dispatch<React.SetStateAction<string[]>>} props.onData Sets the `characters` state in the parent.
  * @returns {React.ReactElement} React element
  * @example <LocationInfo />
  *
  */ /*
  *
- * URL Params
- * Key value pairs of the url params.
- * 1. Get the location id from the url.
- *
  * Query
- * 2. Query Keys
+ * 1. Query Keys
  * Used for caching, needs to be unique to the query data.
  * @see https://tanstack.com/query/latest/docs/react/guides/query-keys
  *
- * 3. Query function
+ * 2. Query function
  * The query function can be any function the returns a promise.
  * The promise should either resolve the data or throw an error.
  * In this case were using getLocation method from the service class.
@@ -42,38 +41,40 @@ import { RM } from '../../types'; // [5]
  * @see https://tanstack.com/query/v4/docs/react/guides/query-functions
  *
  * Check data is not undefined
- * 4. Data types are still <T | undefined> even when using suspense.
+ * 3. Data types are still <T | undefined> even when using suspense.
  * Will remove when a suspense specific function is available eg. useSuspenseQuery.
  * @see: https://github.com/TanStack/query/issues/1297
  *
  * Get the character ids
- * 5. Get the character ids from the array of character urls.
+ * 4. Get the character ids from the array of character urls.
  * A character url looks like 'https://rickandmortyapi.com/api/character/24'
  * The `getLastUrlPart` method returns '24' for the above url.
+ *
+ * Pass the character ids
+ * 5. After this component has rendered to the dom pass the character ids to the onData prop.
+ * We use the character ids in the parent component to render a list of `residents` for this location.
  *
  * Return component
  *
  */
-export const LocationInfo = ({
-    locationId,
-    getCharacterIds,
-}: RM.LocationProps): React.ReactElement | null => {
+export const LocationInfo = ({ locationId, onData }: RM.LocationProps): React.ReactElement | null => {
     // Query
     const { data } = useQuery({
-        queryKey: ['location', locationId], // [2]
-        queryFn: () => RickMortyService.instance.getLocation(locationId), // [3]
+        queryKey: ['location', locationId], // [1]
+        queryFn: () => RickMortyService.instance.getLocation(locationId), // [2]
     });
 
     // Check data is not undefined
-    if (!data) return null; // [4]
+    if (!data) return null; // [3]
 
-    // Get the resident ids
+    // Get the character ids
     const characters: string[] = data.residents.map(character => {
-        return StringUtil.instance.getLastUrlPart(character); // [5]
+        return StringUtil.instance.getLastUrlPart(character); // [4]
     });
 
+    // Pass the character ids
     useEffect(() => {
-        getCharacterIds(characters);
+        onData(characters); // [5]
     }, []);
 
     // Return component

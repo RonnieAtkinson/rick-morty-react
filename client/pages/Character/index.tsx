@@ -18,20 +18,36 @@ import { EpisodesFor, Loader } from '../../components'; // [4]
 /**
  * Character page component
  *
+ * @returns {React.ReactElement} React element
+ * @example
+ * <PageCharacter />
+ *
+ */ /*
+ *
+ * URL params
+ * Key value pairs of the url params.
+ * 1. Get the character id from the url.
+ *
+ * State
+ * 2. State for the episode ids, initially an empty array.
+ * Updated with episodes ids for this character from CharacterInfo.
+ *
+ * Return component
+ *
  */
 export const PageCharacter = (): React.ReactElement => {
     // URL params
     const { characterId } = useParams(); // [1]
 
-    // State
-    const [episodes, setEpisodes] = useState([]);
+    // States
+    const [episodes, setEpisodes] = useState([]); // [2]
 
     // Return component
     return (
         <section>
             <h1>Character</h1>
             <Suspense fallback={<Loader />}>
-                <CharacterInfo characterId={characterId} getEpisodeIds={setEpisodes} />
+                <CharacterInfo characterId={characterId} onData={setEpisodes} />
 
                 <h3>{`${episodes.length} ${episodes.length === 1 ? 'Episode' : 'Episodes'}`}</h3>
                 <Suspense fallback={<Loader />}>

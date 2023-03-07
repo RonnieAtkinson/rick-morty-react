@@ -16,8 +16,12 @@ import { Loader } from '../../components'; // [3]
 /**
  * Episodes page component
  *
+ * @returns {React.ReactElement} React element
+ * @example
+ * <PageEpisodes />
+ *
  */
-export const PageEpisodes = () => {
+export const PageEpisodes = (): React.ReactElement => {
     // Return component
     return (
         <section>

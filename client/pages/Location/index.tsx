@@ -18,20 +18,37 @@ import { CharactersFor, Loader } from '../../components'; // [4]
 /**
  * Location page component
  *
+ * @returns {React.ReactElement} React element
+ * @example
+ * <PageLocation />
+ *
+ *
+ */ /*
+ *
+ * URL Params
+ * Key value pairs of the url params.
+ * 1. Get the location id from the url.
+ *
+ * State
+ * 2. State for the character ids, initially an empty array.
+ * Updated with character ids for this location from LocationInfo.
+ *
+ * Return component
+ *
  */
-export const PageLocation = () => {
+export const PageLocation = (): React.ReactElement => {
     // URL params
     const { locationId } = useParams(); // [1]
 
     // State
-    const [characters, setCharacters] = useState([]);
+    const [characters, setCharacters] = useState([]); // [2]
 
     // Return component
     return (
         <section>
             <h1>Location</h1>
             <Suspense fallback={<Loader />}>
-                <LocationInfo locationId={locationId} getCharacterIds={setCharacters} />
+                <LocationInfo locationId={locationId} onData={setCharacters} />
 
                 <h3>{`${characters.length} ${characters.length === 1 ? 'Resident' : 'Residents'}`}</h3>
                 <Suspense fallback={<Loader />}>
@@ -42,7 +59,7 @@ export const PageLocation = () => {
                             cacheKeys={{ locationId }}
                             characterIds={characters}
                             noFilterResultsText='No residents that match those filters.'
-                        /> // [8]
+                        />
                     )}
                 </Suspense>
             </Suspense>
