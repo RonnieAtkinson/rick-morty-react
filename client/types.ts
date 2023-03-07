@@ -88,17 +88,17 @@ export namespace RM {
 
     export type EpisodeProps = {
         episodeId: string | undefined;
-        getCharacterIds: React.Dispatch<React.SetStateAction<string[]>>;
+        onData: React.Dispatch<React.SetStateAction<string[]>>;
     };
 
     export type CharacterProps = {
         characterId: string | undefined;
-        getEpisodeIds: React.Dispatch<React.SetStateAction<string[]>>;
+        onData: React.Dispatch<React.SetStateAction<string[]>>;
     };
 
     export type LocationProps = {
         locationId: string | undefined;
-        getCharacterIds: React.Dispatch<React.SetStateAction<string[]>>;
+        onData: React.Dispatch<React.SetStateAction<string[]>>;
     };
 
     // https://github.com/remix-run/react-router/blob/main/packages/react-router-dom/index.tsx
