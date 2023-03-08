@@ -7,7 +7,6 @@ export * from './EpisodesFor';
 export * from './EpisodeList';
 export * from './CharactersFor';
 export * from './CharacterList';
-export * from './LocationLink';
 export * from './LocationList';
 export * from './Filter';
 export * from './Filters';
