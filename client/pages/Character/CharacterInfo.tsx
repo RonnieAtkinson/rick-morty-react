@@ -15,7 +15,7 @@
  */
 import React, { useEffect } from 'react'; // [1]
 import { useQuery } from '@tanstack/react-query'; // [2]
-import { LocationLink } from '../../components'; // [3]
+import { LocationLink } from './LocationLink'; // [3]
 import { RickMortyService } from '../../services'; // [4]
 import { StringUtil } from '../../utils'; // [5]
 import { RM } from '../../types'; // [6]
