@@ -110,4 +110,9 @@ export namespace RM {
     export type FetchError = {
         code: number;
     } & Error;
+
+    export type ErrorFallback = {
+        error: FetchError;
+        resetErrorBoundary: (...args: Array<unknown>) => void;
+    };
 }
