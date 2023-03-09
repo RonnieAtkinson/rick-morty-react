@@ -8,6 +8,7 @@
  *
  */
 import React from 'react';
+import { RM } from '../../types';
 
 /**
  * Fallback error component
@@ -23,13 +24,14 @@ export const ErrorFallback = ({
     error,
     resetErrorBoundary,
 }: {
-    error: Error;
+    error: RM.FetchError;
     resetErrorBoundary: (...args: Array<unknown>) => void;
-}) => {
+}): React.ReactElement => {
     return (
         <section>
             <h1>Error!</h1>
             <p>{error.message}</p>
+            <p>{error.code}</p>
             <button onClick={() => resetErrorBoundary()}>Try again</button>
         </section>
     );
