@@ -20,13 +20,7 @@ import { RM } from '../../types';
  * </ErrorBoundary>
  *
  */
-export const ErrorFallback = ({
-    error,
-    resetErrorBoundary,
-}: {
-    error: RM.FetchError;
-    resetErrorBoundary: (...args: Array<unknown>) => void;
-}): React.ReactElement => {
+export const ErrorFallback = ({ error, resetErrorBoundary }: RM.ErrorFallback): React.ReactElement => {
     return (
         <section>
             <h1>Error!</h1>
