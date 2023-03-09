@@ -106,4 +106,8 @@ export namespace RM {
         nextInit?: URLSearchParamsInit | ((prev: URLSearchParams) => URLSearchParamsInit),
         navigateOpts?: NavigateOptions
     ) => void;
+
+    export type FetchError = {
+        code: number;
+    } & Error;
 }
